@@ -11,6 +11,13 @@ from constraints import apply_constraints
 def main():
     criteria, courses, constraints = get_user_input()
 
+    if len(criteria) == 0:
+        print("\nError: At least one criterion is required to evaluate courses.")
+        return
+
+    if len(courses) == 0:
+        print("\nError: At least one course must be entered.")
+        return
     # Apply constraints BEFORE scoring
     if constraints:
         filtered_courses = apply_constraints(courses, constraints)
