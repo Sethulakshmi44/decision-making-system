@@ -2,26 +2,44 @@
 
 from models import Criterion, Course
 
+def safe_int_input(prompt):
+    while True:
+        try:
+            value = int(input(prompt))
+            if value < 0:
+                print("Please enter a non-negative number.")
+                continue
+            return value
+        except ValueError:
+            print("Invalid input. Please enter a valid integer.")
+
+def safe_float_input(prompt):
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
 
 def get_user_input():
     criteria = []
     courses = []
 
+    print("Welcome to Course Decision Companion")
     # --- Criteria Input ---
-    n = int(input("Enter number of criteria: "))
+    n = safe_int_input("Enter number of criteria (Criteria is the features you want to consider): ")
     for _ in range(n):
         name = input("Criterion name: ")
-        weight = float(input("Weight (importance): "))
+        weight = safe_float_input("Weight (importance): ")
         crit_type = input("Type (benefit/cost): ").lower()
         criteria.append(Criterion(name, weight, crit_type))
 
     # --- Course Input ---
-    m = int(input("\nEnter number of courses: "))
+    m = safe_int_input("\nEnter number of courses: ")
     for _ in range(m):
         cname = input("\nCourse name: ")
         scores = {}
         for c in criteria:
-            val = float(input(f"Score for {c.name}: "))
+            val = safe_float_input(f"Score for {c.name}: ")
             scores[c.name] = val
         courses.append(Course(cname, scores))
 
