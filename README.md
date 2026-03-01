@@ -80,9 +80,7 @@ Trade-off:
 ---
 
 ### Decision 2: Dynamic Rating Scale
-Using a dynamic scale avoids provides more flexibilty and ease of use to users as they can input both:
-- Raw values (e.g., cost in dollars)
-- Subjective ratings
+Using a dynamic rating scale provides flexibility by allowing both raw numerical values (e.g., cost) and subjective ratings.
 
 Trade-off:
 - More flexibility for mixed quantitative inputs
@@ -115,15 +113,27 @@ This improves trust and interpretability.
 
 ## 5. Edge Cases Considered
 
+1. Input Validation Case
+- Non-numeric input for number of criteria or courses
+- Non-numeric weight or rating values
+- Negative weight values
+- Zero criteria entered
+- Zero courses entered
 - Extremely large weight values (e.g., 100000 vs 2)
-- Weights not summing to 100
-- Division-by-zero prevention
-- Missing ratings
-- Negative or invalid input values
-- Unequal rating counts
-- All options scoring equally
+- Garbage or unexpected user inputs
+
+2. Mathematical Safety Cases
+- Weights not summing to 100 (handled via internal normalization)
+- Division-by-zero during normalization
+- All options having identical values for a criterion
+- Equal final scores (tie detection using tolerance threshold)
+
+3. Logical Scenario Cases
 - Single-criterion scenario
 - Single-option scenario
+- All options scoring equally
+- Options filtered out entirely due to hard constraints
+- Weights becoming proportionally equal after normalization
 
 ---
 
@@ -135,19 +145,64 @@ This improves trust and interpretability.
 
 2. Navigate to the project folder:
 
-    cd weighted-decision-matrix
+    cd decision-making-system
 
-3. Install dependencies (if applicable):
-
-    pip install -r requirements.txt
-
-4. Run the program:
+3. Run the program:
 
     python main.py
 
-(Adjust command if using another language)
+## Sample Input
+
+Welcome to Course Decision Companion
+
+Enter number of criteria: 3
+
+Criterion 1:
+Name: Cost
+Weight: 5
+Type: cost
+
+Criterion 2:
+Name: Rating
+Weight: 4
+Type: benefit
+
+Criterion 3:
+Name: Duration
+Weight: 2
+Type: cost
+
+Enter number of courses: 2
+
+Course 1:
+Name: Data Science Bootcamp
+Cost: 5000
+Rating: 9
+Duration: 12
+
+Course 2:
+Name: AI Foundations
+Cost: 4000
+Rating: 8
+Duration: 10
+
+Do you want to add hard constraints? no
 
 ---
+
+## Sample output
+
+=== Final Ranking ===
+1. Data Science Bootcamp - Score: 0.8421
+2. AI Foundations - Score: 0.7984
+
+=== Explanation ===
+Top recommendation: Data Science Bootcamp
+Reasons:
+- High rating impact
+- Competitive cost
+- Balanced duration
+
 
 ## 7. What I Would Improve With More Time
 
